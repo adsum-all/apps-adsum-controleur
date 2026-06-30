@@ -86,12 +86,12 @@ export function Scanner({ token, event, online, onQueueChange }: ScannerProps): 
 
   if (view.kind === "valid") {
     return (
-      <div className="result">
+      <div className="result result-valid">
         <div className="result-avatar">{initials(view.label)}</div>
         <h2>{view.label}</h2>
         <p className="result-id">{view.matricule} . VERIFIE</p>
         <p className="muted">{event.titre}</p>
-        <button type="button" className="btn btn-primary" onClick={() => void confirmPresence(view)}>
+        <button type="button" className="btn btn-ok" onClick={() => void confirmPresence(view)}>
           Confirmer la presence
         </button>
         <button type="button" className="btn btn-ghost" onClick={() => setView({ kind: "scan" })}>
@@ -103,7 +103,7 @@ export function Scanner({ token, event, online, onQueueChange }: ScannerProps): 
 
   if (view.kind === "invalid") {
     return (
-      <div className="result">
+      <div className="result result-invalid">
         <div className="result-glyph result-bad">!</div>
         <h2>QR non valide</h2>
         <p className="muted">{view.reason}. Aucune presence enregistree.</p>
@@ -116,14 +116,14 @@ export function Scanner({ token, event, online, onQueueChange }: ScannerProps): 
 
   if (view.kind === "saved") {
     return (
-      <div className="result">
+      <div className="result result-saved">
         <div className="result-glyph result-ok">OK</div>
         <h2>Presence enregistree</h2>
         <p className="muted">
           {view.label} . {event.titre}
         </p>
         <p className="muted small">file {pendingCount()} . {online ? "synchronisee" : "synchro differee"}</p>
-        <button type="button" className="btn btn-primary" onClick={() => setView({ kind: "scan" })}>
+        <button type="button" className="btn btn-ok" onClick={() => setView({ kind: "scan" })}>
           Scanner le suivant
         </button>
       </div>
