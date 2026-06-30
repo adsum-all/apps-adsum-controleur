@@ -27,8 +27,11 @@ export function Login({ onAuth }: LoginProps): JSX.Element {
 
   return (
     <div className="login">
+      <div className="login-logo" aria-hidden="true">
+        A
+      </div>
       <div className="login-brand">ADSUM</div>
-      <p className="login-sub">Controle des entrees</p>
+      <p className="login-sub">Controle des entrees, scan a la porte</p>
       <form onSubmit={submit} className="login-form">
         <label>
           <span>Courriel</span>
