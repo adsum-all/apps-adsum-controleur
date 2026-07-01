@@ -19,6 +19,7 @@ export interface CheckinMember {
   matricule: string;
   nom: string | null;
   prenoms: string | null;
+  photo_url?: string | null;
 }
 
 export interface CheckinResult {
@@ -33,6 +34,7 @@ export interface VerifyResult {
   reason?: string | null;
   matricule?: string | null;
   nom?: string | null;
+  photo_url?: string | null;
 }
 
 export interface DirectoryMember {

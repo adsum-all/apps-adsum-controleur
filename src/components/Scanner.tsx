@@ -1,7 +1,7 @@
 import { BrowserQRCodeReader, type IScannerControls } from "@zxing/browser";
 import { useEffect, useRef, useState } from "react";
 
-import { type ControlEvent } from "../api.js";
+import { type ControlEvent, verify } from "../api.js";
 import { findById } from "../directory.js";
 import { enqueue, pendingCount, syncQueue } from "../queue.js";
 import { verifyQrToken } from "../qr.js";
@@ -15,7 +15,14 @@ interface ScannerProps {
 
 type View =
   | { kind: "scan" }
-  | { kind: "valid"; membreId: string; label: string; matricule: string; qrToken: string }
+  | {
+      kind: "valid";
+      membreId: string;
+      label: string;
+      matricule: string;
+      qrToken: string;
+      photoUrl: string | null;
+    }
   | { kind: "invalid"; reason: string }
   | { kind: "saved"; label: string };
 
@@ -25,6 +32,7 @@ export function Scanner({ token, event, online, onQueueChange }: ScannerProps): 
   const [view, setView] = useState<View>({ kind: "scan" });
   const [camError, setCamError] = useState<string | null>(null);
   const [manual, setManual] = useState("");
+  const [photoFailed, setPhotoFailed] = useState(false);
 
   useEffect(() => {
     if (view.kind !== "scan") return;
@@ -58,13 +66,33 @@ export function Scanner({ token, event, online, onQueueChange }: ScannerProps): 
     }
     const member = findById(v.membreId);
     const label = member ? `${member.prenoms ?? ""} ${member.nom ?? ""}`.trim() || member.matricule : "Membre";
+    const membreId = v.membreId;
+    setPhotoFailed(false);
     setView({
       kind: "valid",
-      membreId: v.membreId,
+      membreId,
       label,
-      matricule: member?.matricule ?? v.membreId.slice(0, 8),
+      matricule: member?.matricule ?? membreId.slice(0, 8),
       qrToken,
+      photoUrl: null,
     });
+    // When online, ask the API for the signed identity photo. This never blocks
+    // the door: the card renders immediately with the initials fallback and the
+    // photo is swapped in as soon as it arrives. Offline, this call is skipped
+    // and the initials placeholder stays.
+    if (online) {
+      void verify(token, qrToken)
+        .then((result) => {
+          const photoUrl = result.photo_url ?? null;
+          if (!photoUrl) return;
+          setView((current) =>
+            current.kind === "valid" && current.membreId === membreId
+              ? { ...current, photoUrl }
+              : current,
+          );
+        })
+        .catch(() => undefined);
+    }
   }
 
   async function confirmPresence(v: Extract<View, { kind: "valid" }>): Promise<void> {
@@ -85,9 +113,19 @@ export function Scanner({ token, event, online, onQueueChange }: ScannerProps): 
   }
 
   if (view.kind === "valid") {
+    const showPhoto = view.photoUrl !== null && !photoFailed;
     return (
       <div className="result result-valid">
-        <div className="result-avatar">{initials(view.label)}</div>
+        {showPhoto ? (
+          <img
+            className="result-photo"
+            src={view.photoUrl ?? ""}
+            alt="Photo du membre"
+            onError={() => setPhotoFailed(true)}
+          />
+        ) : (
+          <div className="result-avatar">{initials(view.label)}</div>
+        )}
         <h2>{view.label}</h2>
         <p className="result-id">{view.matricule} . VERIFIE</p>
         <p className="muted">{event.titre}</p>

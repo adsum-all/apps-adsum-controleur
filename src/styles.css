@@ -412,6 +412,18 @@ h3 {
   font-family: var(--adsum-font-display);
 }
 
+.result-photo {
+  width: 96px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: var(--adsum-radius-md);
+  margin: 0 auto 16px;
+  display: block;
+  border: 2px solid var(--adsum-ok);
+  background: var(--adsum-board);
+  box-shadow: var(--adsum-shadow-lg);
+}
+
 .result-glyph {
   width: 84px;
   height: 84px;
