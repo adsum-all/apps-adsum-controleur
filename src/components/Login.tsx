@@ -19,7 +19,7 @@ export function Login({ onAuth }: LoginProps): JSX.Element {
     try {
       onAuth(await login(email, password));
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Erreur reseau");
+      setError(err instanceof ApiError ? err.message : "Erreur réseau");
     } finally {
       setBusy(false);
     }
@@ -31,7 +31,7 @@ export function Login({ onAuth }: LoginProps): JSX.Element {
         A
       </div>
       <div className="login-brand">ADSUM</div>
-      <p className="login-sub">Controle des entrees, scan a la porte</p>
+      <p className="login-sub">Contrôle des entrées, scan à la porte</p>
       <form onSubmit={submit} className="login-form">
         <label>
           <span>Courriel</span>
@@ -52,7 +52,7 @@ export function Login({ onAuth }: LoginProps): JSX.Element {
           {busy ? "Connexion..." : "Se connecter"}
         </button>
       </form>
-      <p className="login-note">Acces reserve aux controleurs autorises.</p>
+      <p className="login-note">Accès réservé aux contrôleurs autorisés.</p>
     </div>
   );
 }

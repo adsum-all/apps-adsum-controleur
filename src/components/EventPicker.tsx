@@ -11,12 +11,12 @@ interface EventPickerProps {
 export function EventPicker({ events, loading, error, onPick }: EventPickerProps): JSX.Element {
   return (
     <div className="screen">
-      <h1 className="screen-title">Evenement de pointage</h1>
-      <p className="screen-sub">Choisissez la session a controler.</p>
-      {loading && <p className="muted">Chargement des evenements...</p>}
+      <h1 className="screen-title">Événement de pointage</h1>
+      <p className="screen-sub">Choisissez la session à contrôler.</p>
+      {loading && <p className="muted">Chargement des événements...</p>}
       {error && <p className="banner banner-error">{error}</p>}
       {!loading && !error && events.length === 0 && (
-        <p className="muted">Aucun evenement ouvert ou a venir.</p>
+        <p className="muted">Aucun événement ouvert ou à venir.</p>
       )}
       <ul className="list">
         {events.map((e) => (

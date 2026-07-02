@@ -50,7 +50,7 @@ export function Scanner({ token, event, online, onQueueChange }: ScannerProps): 
         if (stopped) controls.stop();
         else controlsRef.current = controls;
       })
-      .catch(() => setCamError("Camera indisponible. Utilisez la saisie du code ou le mode manuel."));
+      .catch(() => setCamError("Caméra indisponible. Utilisez la saisie du code ou le mode manuel."));
     return () => {
       stopped = true;
       controlsRef.current?.stop();
@@ -127,10 +127,10 @@ export function Scanner({ token, event, online, onQueueChange }: ScannerProps): 
           <div className="result-avatar">{initials(view.label)}</div>
         )}
         <h2>{view.label}</h2>
-        <p className="result-id">{view.matricule} . VERIFIE</p>
+        <p className="result-id">{view.matricule} . VÉRIFIÉ</p>
         <p className="muted">{event.titre}</p>
         <button type="button" className="btn btn-ok" onClick={() => void confirmPresence(view)}>
-          Confirmer la presence
+          Confirmer la présence
         </button>
         <button type="button" className="btn btn-ghost" onClick={() => setView({ kind: "scan" })}>
           Refuser
@@ -144,9 +144,9 @@ export function Scanner({ token, event, online, onQueueChange }: ScannerProps): 
       <div className="result result-invalid">
         <div className="result-glyph result-bad">!</div>
         <h2>QR non valide</h2>
-        <p className="muted">{view.reason}. Aucune presence enregistree.</p>
+        <p className="muted">{view.reason}. Aucune présence enregistrée.</p>
         <button type="button" className="btn btn-primary" onClick={() => setView({ kind: "scan" })}>
-          Reessayer le scan
+          Réessayer le scan
         </button>
       </div>
     );
@@ -156,11 +156,11 @@ export function Scanner({ token, event, online, onQueueChange }: ScannerProps): 
     return (
       <div className="result result-saved">
         <div className="result-glyph result-ok">OK</div>
-        <h2>Presence enregistree</h2>
+        <h2>Présence enregistrée</h2>
         <p className="muted">
           {view.label} . {event.titre}
         </p>
-        <p className="muted small">file {pendingCount()} . {online ? "synchronisee" : "synchro differee"}</p>
+        <p className="muted small">file {pendingCount()} . {online ? "synchronisée" : "synchro différée"}</p>
         <button type="button" className="btn btn-ok" onClick={() => setView({ kind: "scan" })}>
           Scanner le suivant
         </button>
@@ -196,7 +196,7 @@ export function Scanner({ token, event, online, onQueueChange }: ScannerProps): 
           aria-label="Code QR"
         />
         <button type="submit" className="btn btn-ghost">
-          Verifier
+          Vérifier
         </button>
       </form>
     </div>

@@ -111,10 +111,10 @@ export async function getControlEvents(token: string): Promise<ControlEvent[]> {
   });
   if (!res.ok) {
     if (res.status === 404) {
-      throw new ApiError("Module de controle indisponible sur l'API.", 404);
+      throw new ApiError("Module de contrôle indisponible sur l'API.", 404);
     }
     throw new ApiError(
-      res.status === 401 ? "Session expiree" : "Evenements indisponibles",
+      res.status === 401 ? "Session expirée" : "Événements indisponibles",
       res.status,
     );
   }
@@ -133,13 +133,13 @@ export async function checkin(
   });
   if (!res.ok) {
     if (res.status === 404) {
-      throw new ApiError("Module de controle indisponible sur l'API.", 404);
+      throw new ApiError("Module de contrôle indisponible sur l'API.", 404);
     }
     if (res.status === 422) {
-      throw new ApiError((await readDetail(res)) ?? "QR invalide ou expire.", 422);
+      throw new ApiError((await readDetail(res)) ?? "QR invalide ou expiré.", 422);
     }
     throw new ApiError(
-      res.status === 401 ? "Session expiree" : "Pointage impossible.",
+      res.status === 401 ? "Session expirée" : "Pointage impossible.",
       res.status,
     );
   }
@@ -154,10 +154,10 @@ export async function verify(token: string, qrToken: string): Promise<VerifyResu
   });
   if (!res.ok) {
     if (res.status === 404) {
-      throw new ApiError("Module de controle indisponible sur l'API.", 404);
+      throw new ApiError("Module de contrôle indisponible sur l'API.", 404);
     }
     throw new ApiError(
-      res.status === 401 ? "Session expiree" : "Verification impossible.",
+      res.status === 401 ? "Session expirée" : "Vérification impossible.",
       res.status,
     );
   }
@@ -169,8 +169,8 @@ export async function getDirectory(token: string, q?: string): Promise<Directory
   if (q) url.searchParams.set("q", q);
   const res = await fetch(url.toString(), { headers: authHeaders(token) });
   if (!res.ok) {
-    if (res.status === 404) throw new ApiError("Module de controle indisponible sur l'API.", 404);
-    throw new ApiError(res.status === 401 ? "Session expiree" : "Annuaire indisponible", res.status);
+    if (res.status === 404) throw new ApiError("Module de contrôle indisponible sur l'API.", 404);
+    throw new ApiError(res.status === 401 ? "Session expirée" : "Annuaire indisponible", res.status);
   }
   return (await res.json()) as DirectoryMember[];
 }
@@ -186,8 +186,8 @@ export async function checkinManuel(
     body: JSON.stringify({ membre_id: membreId, evenement_id: evenementId }),
   });
   if (!res.ok) {
-    if (res.status === 404) throw new ApiError("Module de controle indisponible sur l'API.", 404);
-    throw new ApiError(res.status === 401 ? "Session expiree" : "Pointage manuel impossible.", res.status);
+    if (res.status === 404) throw new ApiError("Module de contrôle indisponible sur l'API.", 404);
+    throw new ApiError(res.status === 401 ? "Session expirée" : "Pointage manuel impossible.", res.status);
   }
   return (await res.json()) as CheckinResult;
 }
@@ -203,9 +203,9 @@ export async function checkout(
     body: JSON.stringify({ token: qrToken, evenement_id: evenementId }),
   });
   if (!res.ok) {
-    if (res.status === 404) throw new ApiError("Module de controle indisponible sur l'API.", 404);
+    if (res.status === 404) throw new ApiError("Module de contrôle indisponible sur l'API.", 404);
     if (res.status === 422) throw new ApiError((await readDetail(res)) ?? "QR invalide.", 422);
-    throw new ApiError(res.status === 401 ? "Session expiree" : "Sortie impossible.", res.status);
+    throw new ApiError(res.status === 401 ? "Session expirée" : "Sortie impossible.", res.status);
   }
   return (await res.json()) as CheckoutResult;
 }

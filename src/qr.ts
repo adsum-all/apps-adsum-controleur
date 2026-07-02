@@ -50,7 +50,7 @@ export function verifyQrToken(
     const exp = typeof payload.exp === "number" ? payload.exp : 0;
     const membreId = typeof payload.m === "string" ? payload.m : undefined;
     if (exp * 1000 < now) {
-      return { valid: false, reason: "jeton expire", membreId, expiresAt: exp };
+      return { valid: false, reason: "jeton expiré", membreId, expiresAt: exp };
     }
     return { valid: true, membreId, expiresAt: exp };
   } catch {

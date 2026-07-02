@@ -1,7 +1,7 @@
 {
-  "name": "ADSUM Controle",
+  "name": "ADSUM Contrôle",
   "short_name": "ADSUM Scan",
-  "description": "Controle des entrees par scan du QR membre.",
+  "description": "Contrôle des entrées par scan du QR membre.",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",

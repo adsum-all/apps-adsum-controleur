@@ -63,7 +63,7 @@ export async function syncQueue(token: string): Promise<SyncOutcome> {
         await checkinManuel(token, item.membreId, item.evenementId);
       } else {
         item.status = "rejected";
-        item.error = "entree incomplete";
+        item.error = "entrée incomplète";
         rejected += 1;
         continue;
       }

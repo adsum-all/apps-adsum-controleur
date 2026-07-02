@@ -21,7 +21,7 @@ export function SyncQueue({ token, online, onQueueChange }: SyncQueueProps): JSX
     setItems(loadQueue());
     onQueueChange();
     setBusy(false);
-    setNote(`${outcome.synced} synchronise(s), ${outcome.rejected} rejete(s), ${outcome.remaining} en attente.`);
+    setNote(`${outcome.synced} synchronisé(s), ${outcome.rejected} rejeté(s), ${outcome.remaining} en attente.`);
   }
 
   function purge(): void {
@@ -32,14 +32,14 @@ export function SyncQueue({ token, online, onQueueChange }: SyncQueueProps): JSX
   return (
     <div className="screen">
       <h1 className="screen-title">File de synchronisation</h1>
-      <p className="screen-sub">{pendingCount(items)} pointage(s) conserve(s) localement.</p>
+      <p className="screen-sub">{pendingCount(items)} pointage(s) conservé(s) localement.</p>
       {note && <p className="banner banner-ok">{note}</p>}
       <div className="row">
         <button type="button" className="btn btn-primary" onClick={() => void sync()} disabled={busy || !online}>
           {busy ? "Synchronisation..." : online ? "Synchroniser maintenant" : "Hors-ligne"}
         </button>
         <button type="button" className="btn btn-ghost" onClick={purge}>
-          Purger les synchronises
+          Purger les synchronisés
         </button>
       </div>
       <ul className="list">
@@ -64,7 +64,7 @@ export function SyncQueue({ token, online, onQueueChange }: SyncQueueProps): JSX
 }
 
 function statusLabel(status: QueueItem["status"]): string {
-  return status === "synced" ? "synchronise" : status === "rejected" ? "rejete" : "en attente";
+  return status === "synced" ? "synchronisé" : status === "rejected" ? "rejeté" : "en attente";
 }
 
 function badgeClass(status: QueueItem["status"]): string {

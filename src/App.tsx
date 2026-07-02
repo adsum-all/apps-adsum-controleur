@@ -8,11 +8,12 @@ import { Scanner } from "./components/Scanner.js";
 import { SyncQueue } from "./components/SyncQueue.js";
 import { cacheDirectory } from "./directory.js";
 import { pendingCount } from "./queue.js";
+import { clearToken, loadToken, saveToken } from "./session.js";
 
 type Tab = "scan" | "manual" | "queue";
 
 export function App(): JSX.Element {
-  const [token, setToken] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(() => loadToken());
   const [events, setEvents] = useState<ControlEvent[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,8 +35,14 @@ export function App(): JSX.Element {
 
   const refreshQueue = useCallback(() => setQueue(pendingCount()), []);
 
-  const onAuth = useCallback(async (jwt: string) => {
-    setToken(jwt);
+  function logout(): void {
+    clearToken();
+    setToken(null);
+    setEvent(null);
+    setEvents([]);
+  }
+
+  const loadSession = useCallback(async (jwt: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -45,17 +52,34 @@ export function App(): JSX.Element {
       ]);
       setEvents(evts);
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Erreur reseau");
+      // An expired or revoked token surfaces as 401: drop it and return to the
+      // login screen cleanly instead of leaving the user stuck.
+      if (err instanceof ApiError && err.status === 401) {
+        logout();
+        return;
+      }
+      setError(err instanceof ApiError ? err.message : "Erreur réseau");
     } finally {
       setLoading(false);
     }
   }, []);
 
-  function logout(): void {
-    setToken(null);
-    setEvent(null);
-    setEvents([]);
-  }
+  const onAuth = useCallback(
+    (jwt: string) => {
+      saveToken(jwt);
+      setToken(jwt);
+      void loadSession(jwt);
+    },
+    [loadSession],
+  );
+
+  // Rehydrate a persisted session on startup: a token restored from
+  // localStorage needs its events and member directory re-fetched.
+  useEffect(() => {
+    const restored = loadToken();
+    if (restored) void loadSession(restored);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!token) {
     return (

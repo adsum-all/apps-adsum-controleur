@@ -38,13 +38,13 @@ export function ManualEntry({ token, event, online, onQueueChange }: ManualEntry
   return (
     <div className="screen">
       <h1 className="screen-title">Saisie manuelle</h1>
-      <p className="screen-sub">Methode journalisee, fonctionne hors-ligne.</p>
-      {done && <p className="banner banner-ok">Presence enregistree : {done}</p>}
+      <p className="screen-sub">Méthode journalisée, fonctionne hors-ligne.</p>
+      {done && <p className="banner banner-ok">Présence enregistrée : {done}</p>}
       <input
         className="search"
         value={q}
         onChange={(e) => onSearch(e.target.value)}
-        placeholder="Nom, code, telephone..."
+        placeholder="Nom, code, téléphone..."
         aria-label="Rechercher un membre"
       />
       <ul className="list">
