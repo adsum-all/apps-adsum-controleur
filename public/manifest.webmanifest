@@ -1,0 +1,11 @@
+{
+  "name": "ADSUM Contrôle",
+  "short_name": "ADSUM Scan",
+  "description": "Contrôle des entrées par scan du QR membre.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#101218",
+  "theme_color": "#101218",
+  "icons": []
+}
