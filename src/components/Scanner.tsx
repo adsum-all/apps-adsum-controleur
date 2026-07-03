@@ -65,7 +65,10 @@ export function Scanner({ token, event, online, onQueueChange }: ScannerProps): 
       return;
     }
     const member = findById(v.membreId);
-    const label = member ? `${member.prenoms ?? ""} ${member.nom ?? ""}`.trim() || member.matricule : "Membre";
+    const nomComplet = member ? `${member.prenoms ?? ""} ${member.nom ?? ""}`.trim() || member.matricule : "Membre";
+    // The confirmed honorific prefix (Berger, Coordinatrice...) shows before the
+    // name so the controller greets the member properly.
+    const label = member?.titre ? `${member.titre} ${nomComplet}` : nomComplet;
     const membreId = v.membreId;
     setPhotoFailed(false);
     setView({

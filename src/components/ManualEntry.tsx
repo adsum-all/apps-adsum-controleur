@@ -23,7 +23,8 @@ export function ManualEntry({ token, event, online, onQueueChange }: ManualEntry
   }
 
   async function record(member: DirectoryMember): Promise<void> {
-    const label = `${member.prenoms ?? ""} ${member.nom ?? ""}`.trim() || member.matricule;
+    const nomComplet = `${member.prenoms ?? ""} ${member.nom ?? ""}`.trim() || member.matricule;
+    const label = member.titre ? `${member.titre} ${nomComplet}` : nomComplet;
     enqueue({ kind: "manual", membreId: member.id, evenementId: event.id, matricule: member.matricule, label });
     onQueueChange();
     if (online) {
@@ -52,7 +53,7 @@ export function ManualEntry({ token, event, online, onQueueChange }: ManualEntry
           <li key={m.id}>
             <button type="button" className="event" onClick={() => void record(m)}>
               <div className="event-main">
-                <strong>{`${m.prenoms ?? ""} ${m.nom ?? ""}`.trim() || m.matricule}</strong>
+                <strong>{`${m.titre ? `${m.titre} ` : ""}${`${m.prenoms ?? ""} ${m.nom ?? ""}`.trim() || m.matricule}`}</strong>
                 <span className="muted">
                   {m.matricule} . {m.commission ?? "-"}
                 </span>

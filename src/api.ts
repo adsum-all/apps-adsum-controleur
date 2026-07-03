@@ -20,6 +20,8 @@ export interface CheckinMember {
   nom: string | null;
   prenoms: string | null;
   photo_url?: string | null;
+  /** Confirmed honorific prefix (Berger, Coordinatrice...), resolved by gender. */
+  titre?: string | null;
 }
 
 export interface CheckinResult {
@@ -44,6 +46,8 @@ export interface DirectoryMember {
   prenoms: string | null;
   commission: string | null;
   statut: string;
+  /** Confirmed honorific prefix (Berger, Coordinatrice...), resolved by gender. */
+  titre?: string | null;
 }
 
 export interface CheckoutResult {
