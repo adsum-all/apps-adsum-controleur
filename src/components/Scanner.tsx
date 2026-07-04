@@ -19,6 +19,8 @@ type View =
       kind: "valid";
       membreId: string;
       label: string;
+      pastoral: string | null;
+      fonction: string | null;
       matricule: string;
       qrToken: string;
       photoUrl: string | null;
@@ -65,16 +67,21 @@ export function Scanner({ token, event, online, onQueueChange }: ScannerProps): 
       return;
     }
     const member = findById(v.membreId);
-    const nomComplet = member ? `${member.prenoms ?? ""} ${member.nom ?? ""}`.trim() || member.matricule : "Membre";
-    // The confirmed honorific prefix (Berger, Coordinatrice...) shows before the
-    // name so the controller greets the member properly.
-    const label = member?.titre ? `${member.titre} ${nomComplet}` : nomComplet;
+    // Civil name first (NOM Prenom1 [Prenom2]); the function and the pastoral
+    // (Berger/Bergere) appellation are shown separately, never in the name.
+    const civil =
+      member?.nom_affichage?.trim() ||
+      (member ? `${member.nom ?? ""} ${member.prenoms ?? ""}`.trim() : "") ||
+      member?.matricule ||
+      "Membre";
     const membreId = v.membreId;
     setPhotoFailed(false);
     setView({
       kind: "valid",
       membreId,
-      label,
+      label: civil,
+      pastoral: member?.est_berger ? (member?.nom_pastoral_affiche ?? null) : null,
+      fonction: member?.titre ?? null,
       matricule: member?.matricule ?? membreId.slice(0, 8),
       qrToken,
       photoUrl: null,
@@ -130,6 +137,8 @@ export function Scanner({ token, event, online, onQueueChange }: ScannerProps): 
           <div className="result-avatar">{initials(view.label)}</div>
         )}
         <h2>{view.label}</h2>
+        {view.pastoral && <p className="result-pastoral">{view.pastoral}</p>}
+        {view.fonction && <p className="result-fonction">{view.fonction}</p>}
         <p className="result-id">{view.matricule} . VÉRIFIÉ</p>
         <p className="muted">{event.titre}</p>
         <button type="button" className="btn btn-ok" onClick={() => void confirmPresence(view)}>
