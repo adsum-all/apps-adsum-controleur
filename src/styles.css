@@ -453,6 +453,17 @@ h3 {
   margin: 4px 0;
   font-weight: 600;
 }
+/* Pastoral (Berger/Bergere) name and function, shown under the civil name. */
+.result-pastoral {
+  margin: 2px 0 0;
+  font-weight: 700;
+  color: var(--adsum-acc, #b5731a);
+}
+.result-fonction {
+  margin: 1px 0 2px;
+  font-size: 0.9em;
+  opacity: 0.85;
+}
 
 /* Tab bar */
 .tabbar {

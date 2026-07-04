@@ -19,8 +19,11 @@ export interface CheckinMember {
   matricule: string;
   nom: string | null;
   prenoms: string | null;
+  nom_affichage?: string;
+  est_berger?: boolean;
+  nom_pastoral_affiche?: string | null;
   photo_url?: string | null;
-  /** Confirmed honorific prefix (Berger, Coordinatrice...), resolved by gender. */
+  /** Function label (Responsable, Coordinatrice...), resolved by gender. */
   titre?: string | null;
 }
 
@@ -44,9 +47,14 @@ export interface DirectoryMember {
   matricule: string;
   nom: string | null;
   prenoms: string | null;
+  /** Civil display name (NOM Prenom1 [Prenom2]), never a function. */
+  nom_affichage?: string;
+  est_berger?: boolean;
+  /** Gendered pastoral appellation (Berger/Bergere X), when applicable. */
+  nom_pastoral_affiche?: string | null;
   commission: string | null;
   statut: string;
-  /** Confirmed honorific prefix (Berger, Coordinatrice...), resolved by gender. */
+  /** Function label (Responsable, Coordinatrice...), resolved by gender. */
   titre?: string | null;
 }
 
