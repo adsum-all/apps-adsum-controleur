@@ -71,7 +71,7 @@ export function Scanner({ token, event, online, onQueueChange }: ScannerProps): 
     // (Berger/Bergere) appellation are shown separately, never in the name.
     const civil =
       member?.nom_affichage?.trim() ||
-      (member ? `${member.nom ?? ""} ${member.prenoms ?? ""}`.trim() : "") ||
+      (member ? `${member.prenoms ?? ""} ${member.nom ?? ""}`.trim() : "") ||
       member?.matricule ||
       "Membre";
     const membreId = v.membreId;
