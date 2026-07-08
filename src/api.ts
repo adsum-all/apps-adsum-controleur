@@ -153,7 +153,7 @@ export async function loginVerify(email: string, password: string, code: string,
  * every control endpoint. We confirm it at login so a granted account gets in and
  * an ungranted one gets a clear message instead of a broken screen. */
 export async function aAccesControle(token: string): Promise<boolean> {
-  const res = await fetch(`${BASE}/api/v1/me/permissions`, { headers: { Authorization: `Bearer ${token}` } });
+  const res = await fetch(`${BASE}/api/v1/membres/me/permissions`, { headers: { Authorization: `Bearer ${token}` } });
   if (!res.ok) return false;
   const data = (await res.json()) as { permissions?: string[] };
   return (data.permissions ?? []).includes("controle.controler");
